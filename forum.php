@@ -1,11 +1,8 @@
 <?php
-
 include('templates/before.php');
-
 ?>
 
 <?php 
-
 
 // Besöker sidan för första gången
 if(!isset($_SESSION['loggedIn'])){
@@ -18,11 +15,9 @@ $dbc = mysqli_connect("localhost","root","","forum");
 // Sätt rätt teckenkodning
 mysqli_query($dbc,"SET NAMES utf-8");
 
-
 if(isset($_GET['action'])){
-	
 	$action = $_GET['action'];
-	if($action == "new_forum"){
+	if($action == 'new_forum'){
 		if(isset($_POST['forum_name'])){
 			$name = $_POST['forum_name'];
 			$query = "INSERT INTO forums (forum_name) VALUES ('$name');";
@@ -177,7 +172,8 @@ if(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == true){
 
 
 
+?>
 
+<?php
 include('templates/after.php');
-
 ?>

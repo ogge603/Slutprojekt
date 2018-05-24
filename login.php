@@ -53,7 +53,7 @@ else if( isset($_POST['nick']) && isset($_POST['password'])){
 	if($row = mysqli_fetch_array($result)){
 		//echo "Du är nu inloggad!";
 		$_SESSION['loggedIn'] = true;
-		$_SESSION['user_name'] = $row['user_name'];
+		$_SESSION['user_name'] = $row['user_nickname'];
 		$_SESSION['user_id'] = $row['user_id'];
 	}
 	else{
