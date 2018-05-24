@@ -2,17 +2,15 @@ CREATE DATABASE forum;
 USE forum;
 
 CREATE TABLE users (
-user_id int(8) PRIMARY KEY AUTO_INCREMENT,
-user_mail varchar(64) UNIQUE,
-user_nickname varchar(32) UNIQUE,
-user_real_name varchar(32) ,
-user_birthdate varchar(32) ,
-user_password varchar(64) 
+	user_id int(8) PRIMARY KEY AUTO_INCREMENT,
+	user_mail varchar(64) UNIQUE,
+	user_nickname varchar(32) UNIQUE,
+	user_password varchar(64) 
 );
 
 CREATE TABLE forums(
-forum_id int(8) PRIMARY KEY AUTO_INCREMENT,
-forum_name varchar(32) 
+	forum_id int(8) PRIMARY KEY AUTO_INCREMENT,
+	forum_name varchar(32) 
 );
 
 CREATE TABLE threads(
