@@ -1,7 +1,11 @@
+<?php
+session_start();						
+?>
 <!DOCTYPE html>
 <html>
 
 <head>
+
     <style>
         * {
             margin-top: 0;
@@ -117,20 +121,14 @@
         }
         
         .diven {
-            
             width: 700px;
             height: 700px;
-            
         }
         
         Comments {
-            
-            
             width:100px;
             height: 200px;
             background-color: black;
-            
-            
         }
 
     </style>
@@ -143,22 +141,37 @@
         <header>
             <h1> GYM </h1>
             
-<a href="login.php"><button style= "margin-left: 650px;" type="button">Registrera </button></a>  
- 
-<a href="login1.php"><button style= "margin-left: 650px;" type="button">Login </button></a>  
-       
-        </header>
+			<div id="profile">
+				<?php
+				
+				if(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == true){
+					?>
+					<form action="login.php" method="POST">
+						<input type="submit" value="Logga ut" name="logout"> </input>
+					</form>
+					<?php
+				}
+				else{
+					?>
+					<a href="login.php"><button style= "margin-left: 650px;" type="button">Logga in / Registrera </button></a>  	 			
+					<?php
+				}
+				
+				?>
+			
+				</div>
+		</header>
         <div>
 
             <div class="navigation">
                 <ul>
-                    <li><a href="Text.php" class="nav">OM OSS</a></li>
-                    <li><a href="Inlägg.php" class="nav">INLÄGG</a></li>
-                    <li><a href="Profil.php" class="nav">MIN PROFIL </a></li>
+                    <li><a href="about.php" class="nav">OM OSS</a></li>
+                    <li><a href="forum.php" class="nav">FORUM</a></li>
+                    <li><a href="profile.php" class="nav">MIN PROFIL </a></li>
                 </ul>
             </div>
 
             </div>
 
-                <div class="diven">
+            <div class="diven">
                 

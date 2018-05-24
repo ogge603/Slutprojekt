@@ -13,7 +13,7 @@ if($_SESSION['loggedIn']){
 }
 // Om man inte är inloggad
 else{
-	header("Location: login1.php");	
+	header("Location: login.php");	
 }
 
 ?>
