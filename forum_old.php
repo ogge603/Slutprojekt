@@ -160,12 +160,8 @@
         else if(isset($_GET['forum_id'])){
 			?>
         
-            <?php else{
-	$_SESSION['loggedIn'] = false;
-	header("Location: login.php");	
-                
-}
-?>
+            
+
 			<!-- Tillbaka-knapp -->
 			<a href="forum.php"> <button>Tillbaka</button></a><br>
 
