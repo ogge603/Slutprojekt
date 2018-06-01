@@ -155,9 +155,17 @@
 		}
 
 		// Användaren är inne och kollar på ett forum
-		else if(isset($_GET['forum_id'])){
+		
+        
+        else if(isset($_GET['forum_id'])){
 			?>
-
+        
+            <?php else{
+	$_SESSION['loggedIn'] = false;
+	header("Location: login.php");	
+                
+}
+?>
 			<!-- Tillbaka-knapp -->
 			<a href="forum.php"> <button>Tillbaka</button></a><br>
 
@@ -170,7 +178,8 @@
 			</form>
 
 			<?php
-
+            
+    
 			// Hämta forum_id från adressfältet
 			$forum_id = $_GET['forum_id'];
 

@@ -81,7 +81,7 @@ else if(isset($_SESSION['user_id']) && isset($_SESSION['user_name'])){
 }
 else{
 	$_SESSION['loggedIn'] = false;
-	header("Location: forum.php");	
+	header("Location: login.php");	
 }
 
 ?>

@@ -52,6 +52,7 @@ else if(isset($_POST['post_content']) && isset($_POST['thread_id'])){
 if(isset($_GET['thread_id'])){
     ?>
 
+
     <!-- Tillbaka-knapp -->
     <a href="inlägg.php"><button>Tillbaka</button></a><br>
 
@@ -114,7 +115,9 @@ else if(isset($_GET['forum_id'])){
             <p class="threadDesc"><?php echo $row['thread_desc'];?> </p>
             <p class="threadUser">Creator:<?php echo $row['user_nickname'];?> </p>
         </div></a>
-        <?php
+        
+
+<?php
     }
 }
 // Användaren har inte valt forum eller tråd

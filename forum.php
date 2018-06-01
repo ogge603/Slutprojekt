@@ -9,6 +9,16 @@ if(!isset($_SESSION['loggedIn'])){
 	$_SESSION['loggedIn'] = false;
 }
 
+
+if(isset($_POST['like']) && isset($_POST['post_id'])) {
+    $dbc = mysqli_connect("localhost","root","","forum");
+    $post = $_POST['post_id'];
+    $usr = $_SESSION['user_id'];
+    $sql = "INSERT INTO likes VALUES ($usr,$post)";
+    $result = mysqli_query($dbc,$sql);
+}
+
+
 // Skapa en kopppling till databasen
 $dbc = mysqli_connect("localhost","root","","forum");
 
@@ -28,7 +38,7 @@ if(isset($_GET['action'])){
 	
 }
 else if(isset($_POST['thread_name']) && isset($_POST['thread_desc']) && isset($_POST['forum_id'])){
-	// Användaren vill skapa en ny tråd
+	// Användaren vill skapa en ny tråd 
 
 	
 	// Identifiera data
@@ -55,26 +65,32 @@ else if(isset($_POST['post_content']) && isset($_POST['thread_id'])){
 	$content = $_POST['post_content'];
 	$user_id = $_SESSION['user_id'];
 	$thread_id = $_POST['thread_id'];
+    if($content != ""){
+        // Formulera fråga
+        $query = "INSERT INTO posts 
+        (post_content,post_user_id,post_thread_id)
+        VALUES ('$content',$user_id,$thread_id)";
 
-	// Formulera fråga
-	$query = "INSERT INTO posts 
-	(post_content,post_user_id,post_thread_id)
-	VALUES ('$content',$user_id,$thread_id)";
-
-	// Kolla om frågan fungerar
-	if(!mysqli_query($dbc,$query)){
-		die("Något gick fel..."); // Stoppa inläsningen av sidan och skriv ut "Något gick fel..."
-	}
+        // Kolla om frågan fungerar
+        if(!mysqli_query($dbc,$query)){
+            die("Något gick fel..."); // Stoppa inläsningen av sidan och skriv ut "Något gick fel..."
+        }
+        
+    }
 
 }
 
 // Användare är inne och kollar på en tråd
 if(isset($_GET['thread_id'])){
 	?>
+
+
 	
 	<!-- Tillbaka-knapp -->
 	<a href="forum.php"><button>Tillbaka</button></a><br>
-
+<?php 
+    if(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == true){
+?>
 	Skapa ny post:
 	<form action = "forum.php?thread_id=<?php echo $_GET['thread_id'];?>" method = "POST">
 		Text:<input type = "text" name = "post_content" /><br>
@@ -83,7 +99,7 @@ if(isset($_GET['thread_id'])){
 	</form>
 
 	<?php
-
+                                                                     }
 	// Hämta tråd_id från adressfältet
 	$thread_id = $_GET['thread_id'];
 
@@ -93,10 +109,34 @@ if(isset($_GET['thread_id'])){
 
 	// Visa alla poster med rätt tråd_id
 	while($row = mysqli_fetch_array($result)){
+        $post_id = $row['post_id'];
+        $usr = $_SESSION['user_id'];
 		?>
 		<div class="forum"> 
 			<p class="threadDesc"><?php echo $row['user_nickname'];?> wrote:</p>
+            
 			<p class="threadName"><?php echo $row['post_content'];?> </p>
+            <?php
+             $query2 = "SELECT * FROM likes WHERE post = $post_id AND user = $usr";
+            $result2 = mysqli_query($dbc,$query2);
+                if(mysqli_num_rows($result2) == 0) {
+            ?>
+
+            <form action="<?php echo $_SERVER['PHP_SELF']?>?thread_id=<?php echo $thread_id; ?>" method="POST">
+            
+                <input type = "hidden" value = "<?php echo $post_id; ?>" name='post_id'/>
+                <input type = "submit" value="like" name='like'/>
+            
+                            <?php
+                }
+                $query2 = "SELECT COUNT(post) AS likes FROM likes WHERE post = $post_id";
+                $result2 = mysqli_query($dbc,$query2);
+                echo mysqli_fetch_array($result2)['likes'];
+            ?>
+
+            </form>
+            
+            <br><br>
 		</div>
 		<?php
 	}	
@@ -108,7 +148,9 @@ else if(isset($_GET['forum_id'])){
 
 	<!-- Tillbaka-knapp -->
 	<a href="forum.php"> <button>Tillbaka</button></a><br>
-
+<?php 
+    if(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == true){
+?>
 	Skapa ny tråd:
 	<form action = "forum.php?forum_id=<?php echo $_GET['forum_id'];?>" method = "POST">
 		Ämne:<input type = "text" name = "thread_name" /> <br>
@@ -118,7 +160,9 @@ else if(isset($_GET['forum_id'])){
 	</form>
 
 	<?php
-
+    }
+    
+    
 	// Hämta forum_id från adressfältet
 	$forum_id = $_GET['forum_id'];
 
@@ -152,6 +196,7 @@ if(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == true){
 	
 	<?php
 }
+    
 
 	// Hämta alla forum
 	$query = "SELECT * FROM forums";
@@ -160,7 +205,7 @@ if(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == true){
 	// Visa alla forum
 	while($row = mysqli_fetch_array($result)){
 		?>		
-		<a href="forum.php?forum_id=<?php echo $row['forum_id'];?>">
+		<a style="text-decoration:none" href="forum.php?forum_id=<?php echo $row['forum_id'];?>">
 			<div class="forum">
 				<p class="forumName"><?php echo $row['forum_name'];?> </p>
 			</div>
